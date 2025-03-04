@@ -2,7 +2,7 @@ const Post = require("../models/post.model");
 
 const create = async (req, res) => {
   const { title, content, category } = req.body;
-  const path = req.file.path;
+  const path = req.file ? req.file.path : null;
   const user = req.user.id;
   try {
     if (!user || !content || !category || !title || !path) {
@@ -120,27 +120,37 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
     const { createdAt, author, ...newPostData } = req.body;
-    const path = req.file.path;
+    const path = req.file ? req.file.path : null;
     const user = req.user;
 
-    if (!id || !newPostData || !path || !user) {
+    if (!id || !newPostData || !user) {
       return res
         .status(400)
         .json({ error: "Post update failed: Missing required fields!" });
     }
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      {
-        ...newPostData,
-        image: path,
-        $set: { updatedAt: new Date() },
-      },
-      { new: true }
-    );
 
-    if (!updatedPost) {
+    // Get the existing post to get the old image path
+    const existingPost = await Post.findById(id);
+    if (!existingPost) {
       return res.status(404).json({ error: "Post not found!" });
     }
+
+    // Prepare update data
+    const updateData = {
+      ...newPostData,
+      $set: { updatedAt: new Date() },
+    };
+
+    // Only update the image field if a new file was uploaded
+    if (path) {
+      updateData.image = path;
+      // Store the old image path in the request body for the upload middleware
+      req.body.oldImage = existingPost.image;
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     return res.status(200).json(updatedPost);
   } catch (error) {
