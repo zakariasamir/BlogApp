@@ -7,7 +7,7 @@ export const getPosts = () => async (dispatch) => {
     setAuthToken(token);
   }
   try {
-    const res = await axios.get("http://localhost:3000/posts");
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts`);
     dispatch({
       type: "GET_POSTS",
       payload: res.data,
@@ -23,7 +23,10 @@ export const addPost = (postData) => async (dispatch) => {
     setAuthToken(token);
   }
   try {
-    const res = await axios.post("http://localhost:3000/posts", postData);
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/posts`,
+      postData
+    );
     dispatch({
       type: "ADD_POST",
       payload: res.data,
@@ -39,7 +42,7 @@ export const updatePost = (postId, updatedFormData) => async (dispatch) => {
   }
   try {
     const res = await axios.put(
-      `http://localhost:3000/posts/${postId}`,
+      `${import.meta.env.VITE_API_URL}/posts/${postId}`,
       updatedFormData
     );
     dispatch({
@@ -56,7 +59,7 @@ export const deletePost = (postId) => async (dispatch) => {
     setAuthToken(token);
   }
   try {
-    await axios.delete(`http://localhost:3000/posts/${postId}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/posts/${postId}`);
     dispatch({
       type: "DELETE_POST",
       payload: postId,

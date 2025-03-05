@@ -1,20 +1,21 @@
-import React from "react";
+// import React from "react";
 import axios from "axios";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useAppContext } from "./Context";
+import "dotenv";
 
 const Login = () => {
-  const API_URL = "http://localhost:3000/auth";
+  const apiUrl = `${import.meta.env.VITE_API_URL}/auth`;
   axios.defaults.withCredentials = true;
-  const {isLoggedIn, setIsLoggedIn} = useAppContext();
+  const { isLoggedIn, setIsLoggedIn } = useAppContext();
   const onSubmit = async (user) => {
     try {
       const { username, password } = user;
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${apiUrl}/login`, {
         username,
         password,
       });
@@ -105,7 +106,7 @@ const Login = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 {" "}
                 {/* Change 'class' to 'className' */}
-                Don't have an account?{" "}
+                Dont have an account?{" "}
                 <Link
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   to={"/signup"}

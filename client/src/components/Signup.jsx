@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,14 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
-  const API_URL = "http://localhost:3000/auth";
+  const apiUrl = `${import.meta.env.VITE_API_URL}/auth`;
   // const [username, setUsername] = useState();
   // const [email, setEmail] = useState();
   // const [password, setPassword] = useState();
   const signup = async (data) => {
     try {
       const { username, email, password } = data;
-      const responce = await axios.post(`${API_URL}/signup`, {
+      const responce = await axios.post(`${apiUrl}/signup`, {
         username,
         email,
         password,
@@ -121,10 +121,10 @@ const Signup = () => {
               >
                 Create an account
               </button>
-              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Alredy have an account?
                 <Link
-                  class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   to={"/login"}
                 >
                   Login here
