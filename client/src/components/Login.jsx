@@ -10,6 +10,7 @@ import "dotenv";
 
 const Login = () => {
   const apiUrl = `${import.meta.env.VITE_API_URL}/auth`;
+  console.log();
   axios.defaults.withCredentials = true;
   const { isLoggedIn, setIsLoggedIn } = useAppContext();
   const onSubmit = async (user) => {
