@@ -12,10 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const corsOptions = {
-  origin: "https://blog-app-front-red.vercel.app/", // Replace with your frontend's actual URL
-  credentials: true, // This allows cookies and authorization headers
-  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed request methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  origin: "*",
 };
 app.use(cors(corsOptions));
 app.use(cookieParser());
